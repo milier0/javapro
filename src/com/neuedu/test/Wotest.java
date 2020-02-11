@@ -1,10 +1,10 @@
 package com.neuedu.test;
 
 /**
- * Created by hy on 2020/2/6.
+ * Created by lan_jia_nao on 2020/2/9.
  */
-public class MyTset1 {
+public class Wotest {
     public static void main(String[] args) {
-        int b = 20;
+
     }
 }
