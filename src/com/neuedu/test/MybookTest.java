@@ -1,6 +1,8 @@
 package com.neuedu.test;
 
+import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -10,8 +12,16 @@ public class MybookTest {
     //定义一个类数组,长度为200
     public static Mybook[] books = new Mybook[200];
     public static ArrayList<Mybook> arrayList = new ArrayList<>();
+    public static File file =new File("d:/books");
     public static void main(String[] args) {
-        inputData(arrayList);
+
+        if(!file.exists()){
+            inputData(arrayList);
+            save();
+        }else {
+            read();
+        }
+
         menu();
 
         /*print(arrayList);
@@ -55,6 +65,7 @@ public class MybookTest {
     public static void inputData(ArrayList<Mybook> books){
         //控制台输入
         Scanner scanner = new Scanner(System.in);
+        System.out.println("首次运行系统请输入初始化书籍的数量");
         //接入
         int n = scanner.nextInt();
         for(int i =1;i<=n;i++){
@@ -103,6 +114,7 @@ public class MybookTest {
                 //删掉下标
                 books.remove(i);
                 System.out.println("此书删除成功。");
+                save();
                 menu();
                 return;
             }
@@ -124,6 +136,56 @@ public class MybookTest {
         String bookISBN = scanner.next();
         Mybook mybook = new Mybook(name,price,press,author,bookISBN);
         books.add(mybook);
+        save();
         menu();
     }
+    public static void save(){
+        OutputStream os = null;
+        ObjectOutputStream oss = null;
+        try {
+            os = new FileOutputStream(file);
+            oss = new ObjectOutputStream(os);
+            oss.writeObject(arrayList);
+            oss.flush();
+            os.flush();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if (oss!=null)
+                    oss.close();
+                if(os!=null)
+                    os.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    public static void read(){
+        InputStream is = null;
+        ObjectInputStream ois = null;
+        try {
+            is = new FileInputStream(file);
+            ois = new ObjectInputStream(is);
+            arrayList = (ArrayList<Mybook>)ois.readObject();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if(ois!=null)
+                    ois.close();
+                if(is!=null)
+                    is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
