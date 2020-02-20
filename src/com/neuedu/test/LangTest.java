@@ -9,7 +9,7 @@ import java.util.Scanner;
  */
 public class LangTest {
 
-    public static ArrayList<Langren> list = new ArrayList<>();
+    public static ArrayList<String> list = new ArrayList<>();
     public static void main(String[] args) {
 
         menu();
